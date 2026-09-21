@@ -288,21 +288,13 @@ table.scores{width:100%;border-collapse:collapse;margin-top:10px;}table.scores t
       '<button class="theme-toggle" id="themeBtn" title="Toggle theme">' + theme + '</button>' +
       '</div>';
   }
-  <div class="eyebrow">A SECRET ROLE GAME</div>
-
-    <h1 class="title">
-        Detective.<br>
-        Thief.<br>
-        Robber.
-    </h1>
-
-    <p class="subtitle">
-        Everybody has a secret.<br>
-        Two people have a mission.
-    </p>
+  
   function renderSetup(){
     app.innerHTML =
       masthead(state.players.length + " on the case") +
+        '<div class="eyebrow">A SECRET WORD GAME</div>'+
+    '<h1 class="title">Imposter.<br>Among.<br>Us.</h1>'+
+    '<p class="subtitle">Everybody will know the Secret Word.<br>Whoever is Imposter will Lie.</p>' +
       '<div class="card">' +
         '<h2>Recruit players</h2>' +
         '<p class="muted">At least 3 people. Names only — no scores lost between rounds.</p>' +
