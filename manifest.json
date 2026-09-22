@@ -1,6 +1,6 @@
 {
-  "name": "Party Games",
-  "short_name": "Party Games",
+  "name": "Chill Bhai",
+  "short_name": "Chill Bhai",
   "description": "A collection of fun party games for friends.",
   "start_url": "./index.html",
   "scope": "./",
