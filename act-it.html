@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#ffffff">
+<title>Act It • Chill Bhai</title>
+<link rel="manifest" href="manifest.json">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Patrick+Hand+SC&display=swap');
+:root{
+  --bg:#fff;
+  --surface:#fff;
+  --surface-2:#f5f5f5;
+  --text:#111;
+  --muted:#666;
+  --border:#111;
+  --red:#E53935;
+  --yellow:#FFD54F;
+  --green:#66BB6A;
+  --blue:#42A5F5;
+  --purple:#AB7BFF;
+  --shadow:5px 5px 0 #111
+}
+
+html[data-theme="dark"]{
+  --bg:#171717;
+  --surface:#222;
+  --surface-2:#2d2d2d;
+  --text:#fff;
+  --muted:#bdbdbd;
+  --border:#fff;
+  --shadow:5px 5px 0 #000
+}
+
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  padding:0;
+  background:var(--bg);
+  color:var(--text)}
+  
+body{
+  font-family:"Patrick Hand",cursive;
+  -webkit-tap-highlight-color:transparent
+}
+button,input{font:inherit}
+.app{width:100%;min-height:100vh;padding:18px}
+.screen{
+  width:min(720px,100%);
+  min-height:calc(100vh - 36px);
+  margin:0 auto;
+  display:none;
+  flex-direction:column;
+  padding-bottom:30px;
+  animation:in .2s ease
+}
+.screen.active{display:flex}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}
+.brand{font-family:"Patrick Hand SC";font-size:25px}
+.theme-btn{
+  width:45px;
+  height:45px;
+  padding:8px;
+  border:3px solid var(--border);
+  background:var(--surface);
+  color:var(--text);
+  box-shadow:3px 3px 0 var(--border);
+  cursor:pointer
+}
+.theme-btn:active,.btn:active,.key:active,.remove:active{
+  transform:translate(3px,3px);box-shadow:none
+}
+
+.eyebrow{
+  display:table;
+  margin:0 auto 12px;
+  padding:5px 12px;
+  background:var(--text);color:var(--bg);
+  border:3px solid var(--border);
+  font-family:"Patrick Hand SC";
+  font-size:16px
+}
+.title{
+  font-family:"Patrick Hand SC";
+  font-weight: 900;
+  font-size:clamp(52px,7vw,82px);
+  line-height:.82;
+  text-align:center;margin:8px 0 12px
+}
+.subtitle{text-align:center;font-size:22px;line-height:1.15;color:var(--muted);margin:0 0 25px}
+h2{font-family:"Patrick Hand SC";font-size:35px;line-height:.95;margin:0 0 12px}
+h3{font-family:"Patrick Hand SC";font-size:27px;line-height:1;margin:0 0 9px}
+p{font-size:21px;line-height:1.2;margin:8px 0}
+.small{font-size:17px;color:var(--muted);line-height:1.15}
+
+.card{
+  width:100%;background:var(--surface);
+  border:3px solid var(--border);
+  box-shadow:var(--shadow);
+  padding:22px;margin-bottom:20px
+}
+.card.yellow{background:var(--yellow);color:#111}
+.card.blue{background:var(--blue);color:#111}
+.card.red{background:var(--red);color:#111}
+.card.green{background:var(--green);color:#111}
+.card.purple{background:var(--purple);color:#111}
+
+label{display:block;font-family:"Patrick Hand SC";font-size:21px;margin-bottom:7px}input[type=text],input[type=number]{width:100%;height:52px;border:3px solid var(--border);background:var(--surface);color:var(--text);box-shadow:4px 4px 0 var(--border);font-size:23px;padding:8px 12px;outline:none}.field{margin-bottom:17px}.btn{min-height:52px;padding:10px 18px;border:3px solid var(--border);background:var(--surface);color:var(--text);box-shadow:4px 4px 0 var(--border);cursor:pointer;font-family:"Patrick Hand SC";font-size:22px;line-height:1}.btn.primary{background:var(--yellow);color:#111}.btn.blue{background:var(--blue);color:#111}.btn.red{background:var(--red);color:#111}.btn.green{background:var(--green);color:#111}.btn.dark{background:#111;color:#fff}.btn.wide{width:100%}.btn:disabled{opacity:.45;cursor:not-allowed}.button-row{display:flex;gap:12px;flex-wrap:wrap}.button-row .btn{flex:1}
+
+.team-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.team-box{border:3px solid var(--border);box-shadow:4px 4px 0 var(--border);padding:15px;background:var(--surface)}.team-box.blue{background:var(--blue);color:#111}.team-box.red{background:var(--red);color:#111}.team-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.team-name{font-family:"Patrick Hand SC";font-size:27px}.count{font-family:"Patrick Hand SC";font-size:18px}.player-list{display:flex;flex-direction:column;gap:8px;min-height:54px}.player-chip{display:flex;align-items:center;justify-content:space-between;gap:8px;border:3px solid var(--border);background:var(--surface);padding:8px 10px;font-family:"Patrick Hand SC";font-size:21px;box-shadow:2px 2px 0 var(--border)}.remove{width:28px;height:28px;border:2px solid var(--border);background:var(--surface);color:var(--text);font-size:20px;line-height:1;cursor:pointer}.empty{font-size:18px;color:var(--muted);padding:5px 0}.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.rule{border:3px solid var(--border);padding:12px 8px;background:var(--surface);box-shadow:3px 3px 0 var(--border);text-align:center}.rule strong{display:block;font-family:"Patrick Hand SC";font-size:25px}.rule span{font-size:17px}
+
+.round-strip{display:flex;justify-content:space-between;align-items:center;border:3px solid var(--border);background:var(--surface);box-shadow:4px 4px 0 var(--border);padding:11px 14px;margin-bottom:20px;font-family:"Patrick Hand SC";font-size:22px}.round-strip .score{font-size:19px}.actor-card{text-align:center}.team-tag{display:table;margin:0 auto 10px;padding:5px 13px;border:3px solid #111;font-family:"Patrick Hand SC";font-size:19px;background:var(--blue);color:#111}.team-tag.red{background:var(--red)}.actor-name{font-family:"Patrick Hand SC";font-size:42px;line-height:.9;margin-bottom:6px}.secret-card{min-height:300px;background:var(--yellow);color:#111;border:3px solid #111;box-shadow:6px 6px 0 #111;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:25px}.secret-word{font-family:"Patrick Hand SC";font-size:clamp(46px,13vw,78px);line-height:.85;margin:12px 0 22px;word-break:break-word}.lock-icon{font-size:54px;line-height:1}
+
+.timer-card{text-align:center;background:var(--surface)}.timer-label{font-family:"Patrick Hand SC";font-size:22px;color:var(--muted)}.timer{font-family:"Patrick Hand SC";font-size:clamp(72px,20vw,120px);line-height:.8;margin:17px 0 25px}.timer.warning{color:var(--red);animation:pulse .8s infinite alternate}@keyframes pulse{to{transform:scale(1.04)}}.stage{border:3px solid var(--border);box-shadow:5px 5px 0 var(--border);background:var(--surface);padding:18px;margin-bottom:20px}.guess-display{min-height:58px;border:3px dashed var(--border);background:var(--surface-2);padding:8px 12px;font-family:"Patrick Hand SC";font-size:30px;text-align:center;word-break:break-word}.guess-placeholder{color:var(--muted)}
+
+.keyboard{display:flex;flex-direction:column;gap:7px;margin-top:14px;max-width:620px;margin-left:auto;margin-right:auto}.key-row{display:flex;justify-content:center;gap:6px}.key{min-height:50px;flex:1;max-width:58px;border:2px solid #8b8b8b;border-radius:0;background:var(--surface);color:var(--text);box-shadow:0 2px 0 #777;font-family:"Patrick Hand SC","Patrick Hand",cursive;font-size:20px;font-weight:500;cursor:pointer;padding:5px 2px;touch-action:manipulation;border:3px solid var(--border);}.key:active{transform:translateY(2px);box-shadow:none}.key.action{background:var(--surface-2);font-size:17px}.key.submit{background:var(--green);color:#111;border-color:#111;box-shadow:3px 3px 0 #111;font-family:"Patrick Hand SC";font-size:22px;max-width:none}.key.space{flex:5;max-width:none}.key.back{flex:1.25}.key.clear{flex:1.25;background:var(--red);color:#111}.key.shift{flex:1.25}.answer-feedback{min-height:32px;text-align:center;font-family:"Patrick Hand SC";font-size:25px;margin-top:7px}.answer-feedback.wrong{color:var(--red)}
+
+.result-box{
+  border:3px solid var(--border);
+  box-shadow:5px 5px 0 var(--border);
+  padding:25px;
+  text-align:center;
+  margin-bottom:20px
+}
+.result-box.success{
+  background:var(--green);
+  color:#111
+}
+.result-box.failure{
+  background:var(--red);
+  color:#111
+}
+.result-status{
+  font-family:"Patrick Hand SC";
+  font-size:58px;
+  line-height:.85;
+  margin-bottom:13px
+}
+.result-word{
+  font-family:"Patrick Hand SC";
+  font-weight: 800;
+  font-size:clamp(45px,7vw,76px);
+  line-height:.85;
+
+  word-break:break-word
+}
+.result-box.success .result-word{color:#111}
+.result-meta{font-size:21px;margin-top:13px}
+.score-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.score-card{
+  border:3px solid var(--border);
+  box-shadow:4px 4px 0 var(--border);
+  padding:18px;text-align:center
+}
+.score-card.blue{background:var(--blue);color:#111}
+.score-card.red{background:var(--red);color:#111}
+.score-team{font-family:"Patrick Hand SC";font-size:28px}
+.score-number{font-family:"Patrick Hand SC";font-size:62px;line-height:.8;margin-top:8px}
+
+@media(max-width:560px){.app{padding:13px}.screen{min-height:calc(100vh - 26px)}.card{padding:18px}.team-grid{grid-template-columns:1fr}.rules{grid-template-columns:1fr 1fr 1fr}.keyboard{gap:5px}.key-row{gap:4px}.key{min-height:43px;font-size:17px;border-radius:0}.key.action{font-size:15px}.button-row{flex-direction:column}.button-row .btn{width:100%}.secret-card{min-height:270px}}@media(max-width:390px){.key{font-size:16px}.key-row{gap:3px}.key{min-height:40px}}
+</style>
+</head>
+
+<body><div class="app">
+<section id="setup" class="screen active">
+<div class="topbar"><div class="brand">CHILL BHAI</div><button class="theme-btn" data-theme>☾</button></div>
+<div class="eyebrow">CHARADES • DIGITAL EDITION</div><div class="title">Act.</br>What.</br>You See.</div><p class="subtitle">Two teams. One actor at a time.<br>Act the word before the clock wins.</p>
+<div class="card yellow"><h2>Recruit Your Teams</h2><p>Each team needs at least <b>2 players</b>. Everyone gets a turn to act.</p><div class="field"><label for="playerName">Player name</label><input id="playerName" type="text" autocomplete="off" autocapitalize="words" placeholder="e.g. Tasin"></div><div class="button-row"><button class="btn blue" id="addA">+ TEAM BLUE</button><button class="btn red" id="addB">+ TEAM RED</button></div></div>
+<div class="team-grid"><div class="team-box blue"><div class="team-head"><div class="team-name">TEAM BLUE</div><div class="count" id="countA">0 players</div></div><div class="player-list" id="listA"></div></div><div class="team-box red"><div class="team-head"><div class="team-name">TEAM RED</div><div class="count" id="countB">0 players</div></div><div class="player-list" id="listB"></div></div></div>
+<div class="card"><h2>Game time</h2><div class="field"><label for="timeLimit">Seconds per actor <span class="small">(minimum 60)</span></label><input id="timeLimit" type="number" min="60" max="600" step="10" value="60"></div><div class="rules"><div class="rule"><strong id="roundPreview">0</strong><span>rounds</span></div><div class="rule"><strong>2+</strong><span>players / team</span></div><div class="rule"><strong>+1</strong><span>correct act</span></div></div></div>
+<button class="btn primary wide" id="startBtn" disabled>START THE GAME →</button>
+</section>
+<section id="secret" class="screen"><div class="topbar"><div class="brand">ACT IT!</div><button class="theme-btn" data-theme>☾</button></div><div class="eyebrow" id="secretRound">ROUND 1</div><div class="actor-card card"><div class="team-tag" id="secretTeam">TEAM BLUE</div><div class="actor-name" id="secretActor">PLAYER</div><p class="small">Only this player should look at the screen.</p></div><div class="secret-card"><div class="lock-icon" id="secretLock"></div><div class="secret-word" id="secretWord" style="display:none"></div><button class="btn dark" id="revealBtn">REVEAL SECRET WORD</button><button class="btn" id="hideStartBtn" style="display:none;margin-top:12px">HIDE & START ACTING →</button></div><p class="notice" style="text-align:center">Pass the phone only after the actor has memorized the word.</p></section>
+<section id="act" class="screen"><div class="topbar"><div class="brand">ACT IT!</div><button class="theme-btn" data-theme>☾</button></div><div class="round-strip"><span id="actRound">ROUND 1 • BLUE</span><span class="score" id="actScore">Blue 0 — Red 0</span></div><div class="stage"><div class="team-tag" id="actTeam">TEAM BLUE</div><div class="actor-name" id="actActor">PLAYER</div><p class="small" style="text-align:center">ACT IT. DON'T SPEAK IT.</p></div><div class="timer-card card"><div class="timer-label">TIME LEFT</div><div class="timer" id="timer">60</div><div class="guess-display" id="guessDisplay"><span class="guess-placeholder">The guess appears here...</span></div><div class="answer-feedback" id="answerFeedback" aria-live="polite"></div></div><div class="stage"><h3>Team's answer</h3><p class="small">Use the on-screen keyboard. No phone keyboard will appear.</p><div class="keyboard" id="keyboard"></div></div></section>
+<section id="result" class="screen"><div class="topbar"><div class="brand">ACT IT!</div><button class="theme-btn" data-theme>☾</button></div><div class="eyebrow" id="resultRound">ROUND 1</div><div class="result-box" id="resultBox"><div class="result-status" id="resultStatus">CORRECT!</div><p class="small" id="resultActor">PLAYER • TEAM BLUE</p><div class="result-word" id="resultWord">WORD</div><div class="result-meta" id="resultMeta">Team Blue gets 1 point.</div></div><div class="score-grid"><div class="score-card blue"><div class="score-team">TEAM BLUE</div><div class="score-number" id="scoreA">0</div></div><div class="score-card red"><div class="score-team">TEAM RED</div><div class="score-number" id="scoreB">0</div></div></div><div style="margin-top:20px"><button class="btn primary wide" id="nextBtn">NEXT TURN →</button></div></section>
+<section id="final" class="screen"><div class="topbar"><div class="brand">CHILL BHAI</div><button class="theme-btn" data-theme>☾</button></div><div class="eyebrow">GAME OVER</div><div class="title" style="font-size:clamp(46px,12vw,72px)">FINAL SCORE</div><p class="subtitle" id="finalSubtitle">Everyone got their turn.</p><div class="score-grid" style="margin-bottom:20px"><div class="score-card blue"><div class="score-team">TEAM BLUE</div><div class="score-number" id="finalA">0</div></div><div class="score-card red"><div class="score-team">TEAM RED</div><div class="score-number" id="finalB">0</div></div></div><div class="card yellow" style="text-align:center"><h2 id="winnerText">DRAW!</h2><p id="finalDetails">Great acting. Questionable guessing.</p></div><button class="btn primary wide" id="restartBtn">PLAY AGAIN</button></section>
+<div class="toast" id="toast"></div></div>
+<script>
+const WORDS=["elephant","guitar","airplane","umbrella","doctor","superhero","football","cooking","sleeping","dancing","swimming","fishing","photographer","teacher","police officer","astronaut","pirate","robot","ghost","vampire","monkey","penguin","birthday","wedding","school bus","roller coaster","toothbrush","pizza","ice cream","popcorn","banana","watermelon","backpack","sunglasses","telephone","camera","laptop","television","book","newspaper","rain","thunder","snowman","firefighter","detective","magician","king","queen","baby","grandparent","running","crying","laughing","sneezing","shaving","brushing teeth","driving","washing dishes","opening a gift","taking a selfie","playing drums","flying a kite","riding a bicycle","climbing a mountain","flying a plane","making a cake","walking a dog","feeding a cat","fighting a mosquito","missing the bus","being late","winning a trophy"];
+const state={teams:{A:[],B:[]},timeLimit:60,rounds:0,round:1,actorIndex:{A:0,B:0},currentTeam:"A",currentActor:"",currentWord:"",guess:"",score:{A:0,B:0},usedWords:[],timerId:null,timeLeft:60,acting:false};
+const $=id=>document.getElementById(id);const screens=["setup","secret","act","result","final"];function show(id){screens.forEach(s=>$(s).classList.toggle("active",s===id));scrollTo(0,0)}function label(t){return t==="A"?"TEAM BLUE":"TEAM RED"}function short(t){return t==="A"?"Blue":"Red"}
+function theme(){const cur=document.documentElement.getAttribute("data-theme")==="dark"?"dark":"light";document.documentElement.setAttribute("data-theme",cur==="dark"?"light":"dark");localStorage.setItem("chillBhaiTheme",cur==="dark"?"light":"dark");document.querySelectorAll(".theme-btn[data-theme]").forEach(b=>b.textContent=cur==="dark"?"☾":"☀")}document.querySelectorAll(".theme-btn[data-theme]").forEach(b=>b.onclick=theme);(function(){const s=localStorage.getItem("chillBhaiTheme");if(s)document.documentElement.setAttribute("data-theme",s);document.querySelectorAll(".theme-btn[data-theme]").forEach(b=>b.textContent=s==="dark"?"☀":"☾")})();
+function toast(m){const e=$("toast");e.textContent=m;e.style.display="block";clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display="none",1700)}function esc(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]))}
+function renderTeams(){["A","B"].forEach(t=>{const list=$(t==="A"?"listA":"listB"),count=$(t==="A"?"countA":"countB");count.textContent=state.teams[t].length+" player"+(state.teams[t].length===1?"":"s");list.innerHTML="";if(!state.teams[t].length){list.innerHTML='<div class="empty">No players yet.</div>';return}state.teams[t].forEach((n,i)=>{const r=document.createElement("div");r.className="player-chip";r.innerHTML=`<span>${esc(n)}</span><button class="remove">×</button>`;r.querySelector("button").onclick=()=>{state.teams[t].splice(i,1);renderTeams();updateStart()};list.appendChild(r)})});$("roundPreview").textContent=Math.max(state.teams.A.length,state.teams.B.length)}
+function updateStart(){$("startBtn").disabled=state.teams.A.length<2||state.teams.B.length<2}function add(t){const i=$("playerName"),n=i.value.trim();if(!n){toast("Enter a player name first.");return}if(state.teams[t].some(x=>x.toLowerCase()===n.toLowerCase())){toast("That name is already in this team.");return}state.teams[t].push(n);i.value="";i.focus();renderTeams();updateStart()}
+function initActIt(){
+  $("timeLimit").oninput=()=>{let v=parseInt($("timeLimit").value,10)||60;v=Math.max(60,Math.min(600,v));$("timeLimit").value=v};
+}
+function word(){const a=WORDS.filter(w=>!state.usedWords.includes(w));if(!a.length)state.usedWords=[];const p=a.length?a:WORDS,w=p[Math.floor(Math.random()*p.length)];state.usedWords.push(w);return w}function actor(t){return state.teams[t][state.actorIndex[t]%state.teams[t].length]}
+function start(){if(state.teams.A.length<2||state.teams.B.length<2)return toast("Both teams need at least 2 players.");state.timeLimit=Math.max(60,Math.min(600,parseInt($("timeLimit").value,10)||60));state.rounds=Math.max(state.teams.A.length,state.teams.B.length);state.round=1;state.actorIndex={A:0,B:0};state.score={A:0,B:0};state.usedWords=[];state.currentTeam="A";begin()}
+function begin(){clearInterval(state.timerId);state.currentActor=actor(state.currentTeam);state.currentWord=word();$("secretRound").textContent=`ROUND ${state.round} • ${label(state.currentTeam)}`;$("secretTeam").textContent=label(state.currentTeam);$("secretTeam").className="team-tag"+(state.currentTeam==="B"?" red":"");$("secretActor").textContent=state.currentActor;$("secretWord").textContent=state.currentWord.toUpperCase();$("secretWord").style.display="none";$("secretLock").style.display="block";$("revealBtn").style.display="inline-block";$("hideStartBtn").style.display="none";show("secret")}
+$("revealBtn").onclick=()=>{$("secretWord").style.display="block";$("secretLock").style.display="none";$("revealBtn").style.display="none";$("hideStartBtn").style.display="inline-block"};$("hideStartBtn").onclick=actStart;
+function actStart(){state.guess="";setFeedback("");state.timeLeft=state.timeLimit;state.acting=true;unlockAudio();$("actRound").textContent=`ROUND ${state.round} • ${short(state.currentTeam).toUpperCase()}`;$("actTeam").textContent=label(state.currentTeam);$("actTeam").className="team-tag"+(state.currentTeam==="B"?" red":"");$("actActor").textContent=state.currentActor;updateScore();renderGuess();keyboard();timer();show("act");clearInterval(state.timerId);state.timerId=setInterval(()=>{state.timeLeft--;timer();if(state.timeLeft<=0){clearInterval(state.timerId);state.acting=false;finish(false)}},1000)}
+let audioCtx=null;
+function unlockAudio(){
+  try{if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==="suspended")audioCtx.resume();}catch(e){}
+}
+function timerBeep(seconds){
+  if(seconds>10||seconds<1||!audioCtx)return;
+  try{
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.type="square";o.frequency.value=seconds<=3?880:660;
+    g.gain.setValueAtTime(0.0001,audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(seconds<=3?0.13:0.08,audioCtx.currentTime+0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.13);
+    o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+0.14);
+  }catch(e){}
+}
+function timer(){$("timer").textContent=state.timeLeft;$("timer").classList.toggle("warning",state.timeLeft<=10);if(state.acting&&state.timeLeft<=10&&state.timeLeft>=1)timerBeep(state.timeLeft)}function normalize(s){return s.trim().replace(/\s+/g," ").toLowerCase()}function renderGuess(){$("guessDisplay").innerHTML=state.guess?esc(state.guess):'<span class="guess-placeholder">The guess appears here...</span>'}
+const keyboardRows=["QWERTYUIOP","ASDFGHJKL","ZXCVBNM"];
+function makeKey(label, cls, action){
+  const b=document.createElement("button");
+  b.type="button";
+  b.className="key"+(cls?" "+cls:"");
+  b.textContent=label;
+  b.onclick=action;
+  return b;
+}
+function keyboard(){
+  const k=$("keyboard"); k.innerHTML="";
+  keyboardRows.forEach(row=>{
+    const wrap=document.createElement("div"); wrap.className="key-row";
+    [...row].forEach(l=>wrap.appendChild(makeKey(l,"",()=>press(l))));
+    k.appendChild(wrap);
+  });
+  let wrap=document.createElement("div"); wrap.className="key-row";
+  wrap.appendChild(makeKey("⇧","shift action",()=>{}));
+  [..."ZXCVBNM"].forEach(()=>{});
+  wrap.appendChild(makeKey("SPACE","space action",()=>press(" ")));
+  wrap.appendChild(makeKey("⌫","back action",()=>{state.guess=state.guess.slice(0,-1);renderGuess();}));
+  k.appendChild(wrap);
+  wrap=document.createElement("div"); wrap.className="key-row";
+  wrap.appendChild(makeKey("CLEAR","clear action",()=>{state.guess="";renderGuess();setFeedback("");}));
+  wrap.appendChild(makeKey("✓ CHECK ANSWER","submit",check));
+  k.appendChild(wrap);
+}
+function setFeedback(text,wrong=false){
+  const el=$("answerFeedback"); el.textContent=text||""; el.className="answer-feedback"+(wrong?" wrong":"");
+}
+function press(k){if(!state.acting||state.guess.length>=50)return;setFeedback("");state.guess+=k;renderGuess();if(normalize(state.guess)===normalize(state.currentWord))check()}function check(){if(!state.acting)return;if(normalize(state.guess)===normalize(state.currentWord)){clearInterval(state.timerId);state.acting=false;finish(true)}else{state.guess="";renderGuess();setFeedback("WRONG WORD! KEEP ACTING!",true);setTimeout(()=>{if(state.acting)setFeedback("")},900)}}
+function finish(ok){clearInterval(state.timerId);state.acting=false;if(ok)state.score[state.currentTeam]++;$("resultBox").className="result-box "+(ok?"success":"failure");$("resultStatus").textContent=ok?"CORRECT!":"TIME'S UP!";$("resultActor").textContent=`${state.currentActor} • ${label(state.currentTeam)}`;$("resultWord").textContent=state.currentWord.toUpperCase();$("resultMeta").textContent=ok?`${label(state.currentTeam)} gets 1 point.`:"The correct word was not guessed in time.";$("resultRound").textContent=`ROUND ${state.round} • ${label(state.currentTeam)}`;updateScore();$("nextBtn").textContent=state.round<=state.rounds?"NEXT TURN →":"SEE FINAL SCORE →";show("result")}
+function updateScore(){$("actScore").textContent=`Blue ${state.score.A} — Red ${state.score.B}`;$("scoreA").textContent=state.score.A;$("scoreB").textContent=state.score.B}
+
+function final(){$("finalA").textContent=state.score.A;$("finalB").textContent=state.score.B;if(state.score.A>state.score.B){$("winnerText").textContent="TEAM BLUE WINS!";$("finalSubtitle").textContent="Blue had the sharper acting and guessing."}else if(state.score.B>state.score.A){$("winnerText").textContent="TEAM RED WINS!";$("finalSubtitle").textContent="Red had the sharper acting and guessing."}else{$("winnerText").textContent="DRAW!";$("finalSubtitle").textContent="Perfectly balanced chaos."}$("finalDetails").textContent=`${state.rounds} round${state.rounds===1?"":"s"} • ${state.timeLimit} seconds per actor.`;show("final")}
+function bindControls(){
+  const addA=$("addA"), addB=$("addB"), playerName=$("playerName"), timeLimit=$("timeLimit");
+  const startBtn=$("startBtn"), nextBtn=$("nextBtn"), restartBtn=$("restartBtn");
+  if(!addA || !addB || !playerName || !timeLimit || !startBtn || !nextBtn || !restartBtn){
+    console.error("ACT IT! initialization failed: required game element is missing.");
+    return;
+  }
+  addA.onclick=()=>add("A");
+  addB.onclick=()=>add("B");
+  playerName.onkeydown=e=>{if(e.key==="Enter")add("A")};
+  timeLimit.oninput=()=>{let v=parseInt(timeLimit.value,10)||60;v=Math.max(60,Math.min(600,v));timeLimit.value=v};
+  startBtn.onclick=start;
+  nextBtn.onclick=()=>{if(state.currentTeam==="A"){state.currentTeam="B"}else{state.currentTeam="A";state.round++}if(state.round<=state.rounds){state.actorIndex[state.currentTeam]++;begin()}else final()};
+  restartBtn.onclick=()=>{clearInterval(state.timerId);state.teams={A:[],B:[]};state.round=1;state.score={A:0,B:0};state.actorIndex={A:0,B:0};state.usedWords=[];renderTeams();updateStart();show("setup")};
+  renderTeams();
+  updateStart();
+}
+
+if(document.readyState==="loading"){
+  document.addEventListener("DOMContentLoaded",bindControls,{once:true});
+}else{
+  bindControls();
+}
+if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js",{updateViaCache:"none"}).catch(()=>{});
+</script></body></html>
