@@ -963,13 +963,120 @@ function updateThemeIcon() {
 </script>
 
 <script>
-if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./sw.js")
-            .then(() => console.log("Service Worker registered"))
-            .catch(error => console.error("Service Worker registration failed:", error));
+/* Chill Bhai update checker */
+(function () {
+    const APP_VERSION = "1.0.0";
+    const VERSION_URL = "./version.json";
+    const UPDATE_KEY = "chillBhaiUpdateDismissed";
+
+    function showUpdateNotice(latestVersion) {
+        if (document.getElementById("chillUpdateNotice")) return;
+
+        const box = document.createElement("div");
+        box.id = "chillUpdateNotice";
+        box.innerHTML = `
+            <div style="font-family:Arial,sans-serif;font-weight:800;font-size:15px;line-height:1.25;margin-bottom:6px;">
+                🎉 Chill Bhai update available
+            </div>
+            <div style="font-family:Arial,sans-serif;font-size:13px;line-height:1.35;margin-bottom:10px;opacity:.9;">
+                A newer version (${latestVersion}) is available.
+            </div>
+            <div style="display:flex;gap:8px;">
+                <button id="chillUpdateNow" style="flex:1;border:2px solid #111;background:#FFD54F;color:#111;padding:9px 10px;font-weight:800;cursor:pointer;box-shadow:3px 3px 0 #111;">
+                    Update now
+                </button>
+                <button id="chillUpdateLater" style="border:2px solid #111;background:#fff;color:#111;padding:9px 10px;font-weight:800;cursor:pointer;">
+                    Later
+                </button>
+            </div>
+        `;
+
+        Object.assign(box.style, {
+            position: "fixed",
+            left: "14px",
+            right: "14px",
+            bottom: "14px",
+            zIndex: "2147483647",
+            maxWidth: "420px",
+            margin: "0 auto",
+            padding: "14px",
+            background: "#fff",
+            color: "#111",
+            border: "3px solid #111",
+            boxShadow: "5px 5px 0 #111",
+            borderRadius: "0"
+        });
+
+        document.body.appendChild(box);
+
+        document.getElementById("chillUpdateLater").onclick = function () {
+            box.remove();
+            try { localStorage.setItem(UPDATE_KEY, latestVersion); } catch (e) {}
+        };
+
+        document.getElementById("chillUpdateNow").onclick = async function () {
+            const button = this;
+            button.disabled = true;
+            button.textContent = "Updating…";
+
+            try {
+                if ("serviceWorker" in navigator) {
+                    const registration = await navigator.serviceWorker.getRegistration();
+                    if (registration) await registration.update();
+                }
+            } catch (e) {
+                console.warn("Service worker update check failed:", e);
+            }
+
+            // Bypass an old document cache entry when reloading.
+            const url = new URL(window.location.href);
+            url.searchParams.set("update", Date.now());
+            window.location.replace(url.toString());
+        };
+    }
+
+    async function checkForUpdate() {
+        if (!navigator.onLine) return;
+
+        try {
+            const response = await fetch(VERSION_URL + "?t=" + Date.now(), {
+                cache: "no-store"
+            });
+            if (!response.ok) return;
+
+            const data = await response.json();
+            const latestVersion = String(data.version || "").trim();
+            if (!latestVersion || latestVersion === APP_VERSION) return;
+
+            showUpdateNotice(latestVersion);
+        } catch (error) {
+            // Offline or temporarily unavailable: silently keep the cached app.
+        }
+    }
+
+    async function registerAndCheck() {
+        if ("serviceWorker" in navigator) {
+            try {
+                const registration = await navigator.serviceWorker.register("./sw.js", {
+                    updateViaCache: "none"
+                });
+
+                // Ask the browser to check for a newer service worker.
+                await registration.update();
+            } catch (error) {
+                console.warn("Service Worker registration failed:", error);
+            }
+        }
+
+        checkForUpdate();
+    }
+
+    window.addEventListener("load", registerAndCheck);
+    window.addEventListener("online", checkForUpdate);
+    document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState === "visible") checkForUpdate();
     });
-}
+})();
 </script>
 </body>
 </html>
